@@ -15,23 +15,18 @@ jobs:
     runs-on: macos-14
 
     steps:
-      - name: Baixar arquivos do repositorio
+      - name: Baixar arquivos
         uses: actions/checkout@v4
 
-      - name: Conferir ZIP enviado
-        run: |
-          pwd
-          ls -lah
-          test -f Seven7-fork-cloud-build.zip
-          unzip -tq Seven7-fork-cloud-build.zip
+      - name: Conferir ZIP
+        run: unzip -tq Seven7-fork-cloud-build.zip
 
-      - name: Extrair o bundle
+      - name: Extrair ZIP
         run: unzip -oq Seven7-fork-cloud-build.zip
 
-      - name: Compilar e montar IPA
+      - name: Compilar IPA
         run: |
-          ROOT="<LaTex>(find . -type d -name 'ThreeOneOSFive.xcodeproj' -print -quit)"           test -n "</LaTex>ROOT"
-          ROOT="<LaTex>{ROOT%/ThreeOneOSFive.xcodeproj}"           cd "</LaTex>ROOT"
+          cd Seven7-fork-cloud-build
           chmod +x scripts/build-unsigned-ipa.sh
           scripts/build-unsigned-ipa.sh
 
@@ -39,6 +34,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Seven7-unsigned-ipa
-          path: "**/Seven7-unsigned.ipa"
+          path: Seven7-fork-cloud-build/Seven7-unsigned.ipa
           if-no-files-found: error
           retention-days: 7
